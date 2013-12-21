@@ -1,0 +1,16 @@
+.wb_calendar_table {
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.wb_calendar_table td {
+    border: 1px solid #ddd;
+}
+
+.wb_calendar_cell {
+    height: 120px;
+}
+
+
