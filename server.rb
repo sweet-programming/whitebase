@@ -6,5 +6,8 @@ if development?
 end
 
 get '/' do
+  @now = Time.now.month
+
+  
   erb :index
 end
