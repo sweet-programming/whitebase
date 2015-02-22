@@ -1,8 +1,9 @@
 (function($) {
   $.fn.wb_calendar = function(options) {
+    var today = new Date();
     var defaults = {
-      "year" : 2013,
-      "month" : 12
+      "year" : today.getFullYear(),
+      "month" : today.getMonth() + 1
     };
 
     var setting = $.extend(defaults, options);
