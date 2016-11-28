@@ -1,12 +1,12 @@
 # rakefile
 
-require 'rugged'
+require 'git'
 
 task :init do
-  Rugged::Repository.init_at './repos'
+  Git.init './repos'
 end
 
 task :daily do
-  repo = Rugged::Repository.new './repos'
-  repo.index.add 'today.md'
+  git = Git.new './repos'
+  git.add 'today.md'
 end

@@ -1,6 +1,21 @@
+require 'date'
+require 'pathname'
+require 'git'
+
 class WhiteBase
   def initialize
-    @repo = Rugged::Repository.new './repos'
+    @git = Git.open(Pathname.new(__dir__) + 'repos')
+  end
+
+  def commit(date = Date.today)
+    @git.add
+    @git.commit(date.strftime('%Y-%m-%d'))
+    # options = {}
+    # options[:tree] = index.write_tree(@repo)
+    # options[:message] = date.strftime('%Y-%m-%d')
+    # options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
+    # #options[:update_ref] = 'HEAD'
+    # Rugged::Commit.create(@repo, options)
   end
 
   private

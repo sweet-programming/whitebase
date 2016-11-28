@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require 'rugged'
 require "redcarpet"
 #require_relative "white_base"
 

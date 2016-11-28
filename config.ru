@@ -1,3 +1,3 @@
-require './server.rb'
+require_relative './server.rb'
 
 run WhiteBase::Server
