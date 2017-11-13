@@ -1,0 +1,24 @@
+!!!
+%html
+  %head
+    %title Whitebase Login
+
+  %body
+    %h2 Whitebase Login
+
+    %form{action: 'login', method: 'POST'}
+      %table
+        %tr
+          %td
+            %label{'form-for': 'loginname'} Login Name
+          %td
+            %input{type: 'text', name: 'loginname'}
+        %tr
+          %td
+            %label{'form-for': 'password'} Password
+          %td
+            %input{type: 'password', name: 'password'}
+        %tr
+          %td
+          %td
+            %input{type: 'submit'}
