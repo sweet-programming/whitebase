@@ -2,9 +2,10 @@
 
 require 'git'
 require 'fileutils'
+require_relative 'lib/whitebase/repos'
 
 task :init do
-  Git.init './repos'
+  WhiteBase::Repos.init
 end
 
 task :daily do

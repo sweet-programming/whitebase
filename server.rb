@@ -5,6 +5,7 @@ require 'fileutils'
 require 'pathname'
 require_relative './lib/whitebase/authorization'
 require_relative './lib/whitebase/user'
+require_relative './lib/whitebase/repos'
 
 if development?
   require 'sinatra/reloader'
@@ -59,8 +60,15 @@ module WhiteBase
       erb :files
     end
 
-    post '/files/:filepath' do
-      FileUtils.touch(settings.repos + params[:filepath])
+    put '/files/:filepath' do
+      path = settings.repos + params[:filepath]
+      data = request.body.read
+      if data.empty?
+        FileUtils.touch(path)
+      else
+        File.open(path, 'w') {|f| f.write(data) }
+      end
+      Repos.new(settings.repos).commit
     end
   end
 end
