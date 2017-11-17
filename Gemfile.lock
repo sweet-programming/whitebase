@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    backports (3.6.7)
+    backports (3.10.3)
     bcrypt (3.1.11)
     eventmachine (1.2.5)
     fssm (0.2.10)
@@ -9,14 +9,14 @@ GEM
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
-    multi_json (1.11.2)
-    rack (1.5.2)
+    multi_json (1.12.2)
+    rack (1.6.8)
     rack-protection (1.5.3)
       rack
-    rack-test (0.6.3)
-      rack (>= 1.0)
-    rake (10.3.1)
-    redcarpet (3.2.2)
+    rack-test (0.7.0)
+      rack (>= 1.0, < 3)
+    rake (12.3.0)
+    redcarpet (3.4.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
