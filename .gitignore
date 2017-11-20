@@ -2,3 +2,5 @@
 *.swp
 repos/
 local_repos/
+.passwd
+.auth
