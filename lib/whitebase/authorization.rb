@@ -20,7 +20,7 @@ module WhiteBase
     end
 
     def login(username, password)
-      user = User.auth(username, password) or raise 'login failed'
+      user = User.auth(username, password) or return nil
 
       access_token = SecureRandom.uuid
       expire_at = Time.now + 3600 * 24 * 7 # 1 week
