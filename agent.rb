@@ -27,7 +27,11 @@ class FileObserver
   def tick
     @updated.delete_if do |file, at|
       if at + PERIOD < Time.now
-        @http.put("/files/#{file}", File.read(@repos_dir + ?/ + file))
+        begin
+          @http.put("/files/#{file}", File.read(@repos_dir + ?/ + file))
+        rescue => e
+          puts ">>>> #{e.message}"
+        end
         true
       else
         false
