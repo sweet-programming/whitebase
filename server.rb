@@ -34,7 +34,7 @@ module WhiteBase
       authorize or return
 
       @now = Time.now.month
-      erb :index
+      haml :index
     end
 
     get '/login' do
@@ -57,7 +57,7 @@ module WhiteBase
       file_content = open(settings.repos + "#{params[:splat].join('/')}.md").read()
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true, hard_wrap: true)
       @content = markdown.render(file_content)
-      erb :files
+      haml :files
     end
 
     put '/files/*' do
