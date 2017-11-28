@@ -3,7 +3,7 @@ require 'eventmachine'
 require 'fssm'
 require 'optparse'
 
-options = ARGV.getopts('D:d:u:')
+options = ARGV.getopts('Dd:u:')
 
 pid_file = File.expand_path('../.pid', __FILE__)
 repos_dir = options['d'] || ENV['REPOS_DIR'] || File.expand_path('../repos', __FILE__)
