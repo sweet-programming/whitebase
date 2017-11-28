@@ -1,14 +1,18 @@
 require 'net/http'
 require 'eventmachine'
 require 'fssm'
+require 'optparse'
+
+options = ARGV.getopts('D:d:u:')
 
 pid_file = File.expand_path('../.pid', __FILE__)
-repos_dir = ENV['REPOS_DIR'] || File.expand_path('../repos', __FILE__)
-base_url = ENV['REMOTE_URL']
+repos_dir = options['d'] || ENV['REPOS_DIR'] || File.expand_path('../repos', __FILE__)
+base_url = options['u'] || ENV['REMOTE_URL'] || 'http://localhost:9292'
 
-# Process.daemon
-#
-# File.write(pid_file, Process.pid)
+if options['D']
+  Process.daemon
+  File.write(pid_file, Process.pid)
+end
 
 class FileObserver
   PERIOD = 5
