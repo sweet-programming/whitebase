@@ -53,7 +53,7 @@ class FileObserver
       end
 
       EM.defer do
-        FSSM.monitor(@repos_dir, "*") do
+        FSSM.monitor(@repos_dir, "**/*") do
           update do |base, file|
             observer.update(file)
           end

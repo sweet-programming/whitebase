@@ -51,17 +51,17 @@ module WhiteBase
       end
     end
 
-    get '/files/:filepath' do
+    get '/files/*' do
       authorize or return
 
-      file_content = open(settings.repos + "#{params[:filepath]}.md").read()
+      file_content = open(settings.repos + "#{params[:splat].join('/')}.md").read()
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true, hard_wrap: true)
       @content = markdown.render(file_content)
       erb :files
     end
 
-    put '/files/:filepath' do
-      path = settings.repos + params[:filepath]
+    put '/files/*' do
+      path = settings.repos + params[:splat].join('/')
       data = request.body.read
       if data.empty?
         FileUtils.touch(path)
@@ -69,6 +69,7 @@ module WhiteBase
         File.open(path, 'w') {|f| f.write(data) }
       end
       Repos.new(settings.repos).commit
+      "ok"
     end
   end
 end
