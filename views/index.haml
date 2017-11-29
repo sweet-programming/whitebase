@@ -1,47 +1,12 @@
-!!!
-%html
-  %head
-    %title White Base
-    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
-    %link{ href: "css/bootstrap.min.css", rel: "stylesheet" }
-    %link{ href: "css/whitebase.css", rel: "stylesheet" }
+%div{ class: "container" }
+  %div{ class: "row" }
+    %div{ class: "col-md-2" }
+      %h2 menu
+    %div{ class: "col-md-10" }
+      %div{ class: "calendar table-responsive" }
 
-    :css
-      body {
-        margin-top: 60px;
-      }
-
-  %body
-    %header{ class: "navbar navbar-inverse navbar-fixed-top bs-docs-nav", role: "banner" }
-      %div{ class: "container" }
-        %div{ class: "navbar-header" }
-          %button{ class: "navbar-toggle", type: "button", "data-toggle": "collapse", "data-target": ".bs-navbar-collapse" }
-          %span{ class: "sr-only" } Toggle navigation
-          %span{ class: "icon-bar" }
-          %span{ class: "icon-bar" }
-          %span{ class: "icon-bar" }
-          %a{ href: "/", class: "navbar-brand" } WhiteBase
-        %nav{ class: "collapse navbar-collapse bs-navbar-collapse", role: "navigation" }
-          %ul{ class: "nav navbar-nav" }
-            %li{ class: "active" }
-              %a{ href: "/" } Home
-            %li
-              %a{ href: "../files/today" } Today
-          %ul{ class: "nav navbar-nav navbar-right" }
-            %li
-              %a{ href: "../about" } About
-    %div{ class: "container" }
-      %div{ class: "row" }
-        %div{ class: "col-md-2" }
-          %h2 menu
-        %div{ class: "col-md-10" }
-          %div{ class: "calendar table-responsive" }
-
-    %script{ src: "https://code.jquery.com/jquery.js" }
-    %script{ src: "js/bootstrap.min.js" }
-    %script{ src: "js/strftime.js" }
-    %script{ src: "js/calendar.js" }
-    :javascript
-      $(function() {
-        $(".calendar").wb_calendar();
-      });
+%script{ src: "js/calendar.js" }
+:javascript
+  $(function() {
+    $(".calendar").wb_calendar();
+  });

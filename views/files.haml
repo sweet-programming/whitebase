@@ -1,9 +1,4 @@
-!!!
-%html
-%head
-  %title White Base
-  %meta{ name: "viewport", content: "width: device-width, initial-scale: 1.0" }
-  %link{ href: "/css/whitebase.css", rel: "stylesheet" }
-%body
-%div{ class: 'markdown' }
-  = @content
+%div{ class: "container" }
+  %div{ class: "row" }
+    %div{ class: 'markdown' }
+      = @content
