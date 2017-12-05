@@ -15,7 +15,6 @@ module WhiteBase
   class Server < Sinatra::Base
     configure do
       enable :sessions
-      set :repos, Pathname.new(File.expand_path('../repos', __FILE__))
       set :auth, Authorization.new(File.expand_path('../.auth', __FILE__))
     end
 
@@ -54,21 +53,21 @@ module WhiteBase
     get '/files/*' do
       authorize or return
 
-      file_content = open(settings.repos + "#{params[:splat].join('/')}.md").read()
+      file_content = open(Repos.path + "#{params[:splat].join('/')}.md").read()
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true, hard_wrap: true)
       @content = markdown.render(file_content)
       haml :files
     end
 
     put '/files/*' do
-      path = settings.repos + params[:splat].join('/')
+      path = Repos.path + params[:splat].join('/')
       data = request.body.read
       if data.empty?
         FileUtils.touch(path)
       else
         File.open(path, 'w') {|f| f.write(data) }
       end
-      Repos.new(settings.repos).commit
+      Repos.open.commit
       "ok"
     end
   end

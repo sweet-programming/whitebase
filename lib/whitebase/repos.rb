@@ -4,14 +4,24 @@ require 'git'
 
 module WhiteBase
   class Repos
-    def initialize(dir = nil)
-      @dir = dir || Pathname.new(__dir__) + 'repos'
-      @git = Git.open(@dir)
+    def self.path=(path)
+      @path = Pathname.new(path)
     end
 
-    def self.init(dir = nil)
-      dir = dir || Pathname.new(__dir__) + 'repos'
-      Git.init(dir)
+    def self.path
+      @path ||= Pathname.new('./repos')
+    end
+
+    def initialize
+      @git = Git.open(Repos.path)
+    end
+
+    def self.open
+      Repos.new
+    end
+
+    def self.init(path = nil)
+      Git.init(path || self.path)
     end
 
     def commit(time = Time.now)
@@ -23,6 +33,10 @@ module WhiteBase
       # options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
       # #options[:update_ref] = 'HEAD'
       # Rugged::Commit.create(@repo, options)
+    end
+
+    def tag(time = Time.now)
+      @git.tag(time.strftime('%Y-%m-%d'))
     end
 
     private
