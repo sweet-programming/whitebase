@@ -11,7 +11,7 @@ EM.run do
   EM.add_periodic_timer(5 * 60) do
     now = Time.now
     if now.to_date > last_tagged_at.to_date
-      Repos.open.tag(now)
+      WhiteBase::Repos.open.tag(now)
       last_tagged_at = now
     end
   end
