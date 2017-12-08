@@ -36,7 +36,7 @@ module WhiteBase
     end
 
     def tag(time = Time.now)
-      @git.tag(time.strftime('%Y-%m-%d'))
+      @git.add_tag(time.strftime('%Y-%m-%d'))
     end
 
     private
