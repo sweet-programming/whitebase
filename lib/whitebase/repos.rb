@@ -1,4 +1,5 @@
 require 'date'
+require 'set'
 require 'pathname'
 require 'git'
 
@@ -27,16 +28,20 @@ module WhiteBase
     def commit(time = Time.now)
       @git.add
       @git.commit(time.strftime('%Y-%m-%d %H:%M:%S %z'))
-      # options = {}
-      # options[:tree] = index.write_tree(@repo)
-      # options[:message] = date.strftime('%Y-%m-%d')
-      # options[:parents] = @repo.empty? ? [] : [ @repo.head.target ].compact
-      # #options[:update_ref] = 'HEAD'
-      # Rugged::Commit.create(@repo, options)
     end
 
-    def tag(time = Time.now)
-      @git.add_tag(time.strftime('%Y-%m-%d'))
+    def tag
+      tagged = Set.new(@git.tags.map(&:name))
+      @git.log.each do |log|
+        begin
+          date = Time.parse(log.messge).strftime('%Y-%m-%d')
+          unless tagged.include?(date)
+            @git.add_tag(date)
+            tagged.add(date)
+          end
+        rescue
+        end
+      end
     end
 
     private
