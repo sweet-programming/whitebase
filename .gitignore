@@ -2,6 +2,8 @@
 *.swp
 repos/
 local_repos/
+logs/
 .passwd
 .auth
 .pid
+config.yaml

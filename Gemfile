@@ -9,6 +9,7 @@ end
 
 gem 'redcarpet'
 gem 'fssm'
+#gem 'git'
 gem 'git'
 gem 'haml'
 gem 'bcrypt'
