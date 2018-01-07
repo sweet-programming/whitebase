@@ -3,6 +3,7 @@ require 'sinatra'
 require 'redcarpet'
 require 'fileutils'
 require 'pathname'
+require 'base64'
 require_relative './lib/whitebase/authorization'
 require_relative './lib/whitebase/user'
 require_relative './lib/whitebase/repos'
@@ -61,7 +62,7 @@ module WhiteBase
 
     put '/files/*' do
       path = Repos.path + params[:splat].join('/')
-      data = request.body.read
+      data = Base64.decode64(request.body.read)
       File.open(path, 'w') {|f| f.write(data) }
       Repos.open.commit
       "ok"

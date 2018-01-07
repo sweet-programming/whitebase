@@ -3,6 +3,7 @@ require 'eventmachine'
 require 'fssm'
 require 'optparse'
 require 'fileutils'
+require 'base64'
 require_relative 'lib/whitebase/app_logger'
 
 options = ARGV.getopts('Dd:u:')
@@ -45,7 +46,7 @@ class FileObserver
       @updated.delete_if do |file, at|
         if at + PERIOD < Time.now
           begin
-            @http.put("/files/#{file}", File.read(@repos_dir + ?/ + file))
+            @http.put("/files/#{file}", Base64.encode64(File.read(@repos_dir + ?/ + file)))
           rescue Exception => e
             WhiteBase::AppLogger.exception(e)
             next false
