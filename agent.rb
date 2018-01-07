@@ -44,8 +44,11 @@ class FileObserver
     @mutex.synchronize do
       @updated.delete_if do |file, at|
         if at + PERIOD < Time.now
-          WhiteBase::AppLogger.with_error_log(true) do
+          begin
             @http.put("/files/#{file}", File.read(@repos_dir + ?/ + file))
+          rescue Exception => e
+            WhiteBase::AppLogger.exception(e)
+            next false
           end
           true
         else
