@@ -62,11 +62,7 @@ module WhiteBase
     put '/files/*' do
       path = Repos.path + params[:splat].join('/')
       data = request.body.read
-      if data.empty?
-        FileUtils.touch(path)
-      else
-        File.open(path, 'w') {|f| f.write(data) }
-      end
+      File.open(path, 'w') {|f| f.write(data) }
       Repos.open.commit
       "ok"
     end
