@@ -54,7 +54,7 @@ module WhiteBase
       authorize or return
 
       file_content = open(Repos.path + "#{params[:splat].join('/')}.md").read()
-      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true, hard_wrap: true)
+      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true, hard_wrap: true, fenced_code_blocks: true)
       @content = markdown.render(file_content)
       haml :files
     end
