@@ -1,4 +1,4 @@
-require 'date'
+require 'time'
 require 'set'
 require 'pathname'
 require 'git'
@@ -32,14 +32,15 @@ module WhiteBase
 
     def tag
       tagged = Set.new(@git.tags.map(&:name))
-      @git.log.each do |log|
+      @git.log(200).each do |log|
         begin
-          date = Time.parse(log.messge).strftime('%Y-%m-%d')
+          date = Time.parse(log.message).strftime('%Y-%m-%d')
           unless tagged.include?(date)
-            @git.add_tag(date)
+            @git.add_tag(date, log.sha)
             tagged.add(date)
           end
         rescue
+          puts $!.full_message
         end
       end
     end
