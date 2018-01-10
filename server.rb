@@ -61,8 +61,14 @@ module WhiteBase
     end
 
     put '/files/*' do
-      path = Repos.path + params[:splat].join('/')
+      path = Repos.path + params[:splat].first
       data = Base64.decode64(request.body.read)
+
+      path_list = params[:splat].first.split(?/)
+      if (len = path_list.length) > 1
+        dir = Repos.path + path_list.slice(0, len - 1).join(?/)
+        FileUtils.mkdir_p dir
+      end
       File.open(path, 'w') {|f| f.write(data) }
       Repos.open.commit
       "ok"
