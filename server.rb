@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require 'redcarpet'
 require 'fileutils'
 require 'pathname'
 require 'base64'
@@ -72,6 +71,17 @@ module WhiteBase
       File.open(path, 'w') {|f| f.write(data) }
       Repos.open.commit
       "ok"
+    end
+
+    delete '/files/*' do
+      path = Repos.path + params[:splat].first
+      if File.exists?(path)
+        File.delete(path)
+        "ok"
+      else
+        status 404
+        "file #{path} not found"
+      end
     end
   end
 end

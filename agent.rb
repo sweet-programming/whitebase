@@ -41,6 +41,10 @@ class FileObserver
     WhiteBase::AppLogger.exception(e)
   end
 
+  def delete(file)
+    @http.delete("/files/#{file}")
+  end
+
   def tick
     @mutex.synchronize do
       @updated.delete_if do |file, at|
@@ -75,17 +79,21 @@ class FileObserver
         glob "**/*"
 
         update do |base, file|
+          break if file.end_with?(?~)
           WhiteBase::AppLogger.info "UPDATE: #{base}/#{file}"
           observer.update(file)
         end
 
         create do |base, file|
+          break if file.end_with?(?~)
           WhiteBase::AppLogger.info "CREATE: #{base}/#{file}"
           observer.update(file)
         end
 
         delete do |base, file|
+          break if file.end_with?(?~)
           WhiteBase::AppLogger.info "DELETE: #{base}/#{file}"
+          observer.delete(file)
         end
 
         EM.defer do
