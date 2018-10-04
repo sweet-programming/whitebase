@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'fileutils'
+require 'redcarpet'
 require 'pathname'
 require 'base64'
 require_relative './lib/whitebase/authorization'
@@ -32,7 +33,13 @@ module WhiteBase
     get '/' do
       authorize or return
 
-      @now = Time.now.month
+      @year = Time.now.year
+      @month = Time.now.month
+      haml :index
+    end
+
+    get /\/(\d{4})-(\d{2})/ do
+      (@year, @month) = params['captures']
       haml :index
     end
 
@@ -53,7 +60,13 @@ module WhiteBase
     get '/files/*' do
       authorize or return
 
-      file_content = open(Repos.path + "#{params[:splat].join('/')}.md").read()
+      path = Repos.path + "#{params[:splat].join('/')}.md"
+
+      unless path.exist?
+        return "file not found"
+      end
+
+      file_content = open(path).read()
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true, hard_wrap: true, fenced_code_blocks: true)
       @content = markdown.render(file_content)
       haml :files

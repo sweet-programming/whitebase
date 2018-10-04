@@ -5,8 +5,10 @@
     %div{ class: "col-md-10" }
       %div{ class: "calendar table-responsive" }
 
+  %div= "#{@year}-#{@month}"
+
 %script{ src: "/js/calendar.js" }
 :javascript
   $(function() {
-    $(".calendar").wb_calendar();
+    $(".calendar").wb_calendar({year: #{@year}, month: #{@month} });
   });
