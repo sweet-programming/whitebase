@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'sinatra', '1.4.5'
+gem 'sinatra'
 gem 'rake'
 
 group :development do
-  gem 'sinatra-contrib', '<= 1.4.1'
+  gem 'sinatra-contrib'
 end
 
 gem 'redcarpet'
