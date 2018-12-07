@@ -1,0 +1,13 @@
+%div.container
+  %div.row
+    %div
+      %span.month
+        %a{href: "/#{@date.year}-#{@date.month.to_s.rjust(2, "0")}"} ^
+      %span.prev
+        %a{href: "/#{@prev}"} <<
+      %span.date= @date
+      %span.next
+        %a{href: "/#{@next}"} >>
+  %div.row
+    %div.markdown
+      = @content

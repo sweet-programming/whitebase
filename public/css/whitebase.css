@@ -13,11 +13,28 @@
     height: 120px;
 }
 
-.markdown {
-  width: 94%;
-  margin: 0 auto;
+.month {
+  margin-right: 1rem;
 }
 
+.prev {
+  margin-right: 1rem;
+}
+
+.next {
+  margin-left: 1rem;
+}
+
+.message {
+  background: #fdd;
+  color: #f00;
+  padding: 0.5rem 2rem;
+  margin: 1rem 0;
+}
+
+img {
+  max-width: 600px;
+}
 .markdown h1 {
   background: #fdd;
   padding: 0.5em;

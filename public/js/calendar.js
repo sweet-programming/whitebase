@@ -51,7 +51,7 @@
           date_class = day.strftime("wb_calendar_date_%Y-%m-%d");
           $row.append($("<td>")
                 .append($("<div>", { class: "wb_calendar_cell" })
-                  .append($("<a>", { href: day.strftime("files/diary/%Y-%m-%d") })
+                  .append($("<a>", { href: day.strftime("/%Y-%m-%d") })
                     .append($("<div>", { class: date_class })
                       .append($("<p>").css({ color: "#000", opacity: 0.8 }).text(day.getDate()))))));
 

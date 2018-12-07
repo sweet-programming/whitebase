@@ -17,6 +17,11 @@ module WhiteBase
     configure do
       enable :sessions
       set :auth, Authorization.new(File.expand_path('../.auth', __FILE__))
+      set :markdown, Redcarpet::Markdown.new(Redcarpet::Render::HTML,
+                                             autolink: true,
+                                             tables: true,
+                                             hard_wrap: true,
+                                             fenced_code_blocks: true)
     end
 
     helpers do
@@ -43,6 +48,22 @@ module WhiteBase
       haml :index
     end
 
+    get /\/((\d{4})-(\d{2})-(\d{2}))/ do
+      @date = Date.parse(params['captures'][0])
+      @prev = @date - 1
+      @next = @date + 1
+
+      path = Repos.path + "diary/#{@date}.md"
+
+      if path.exist?
+        file_content = open(path).read()
+        @content = settings.markdown.render(file_content)
+      else
+        @content = "<p class='message'>file not found</p>"
+      end
+      haml :diary
+    end
+
     get '/login' do
       haml :login
     end
@@ -57,7 +78,7 @@ module WhiteBase
       end
     end
 
-    get '/files/*' do
+    get '/docs/*' do
       authorize or return
 
       path = Repos.path + "#{params[:splat].join('/')}.md"
@@ -67,9 +88,20 @@ module WhiteBase
       end
 
       file_content = open(path).read()
-      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true, hard_wrap: true, fenced_code_blocks: true)
-      @content = markdown.render(file_content)
-      haml :files
+      @content = settings.markdown.render(file_content)
+      haml :docs
+    end
+
+    get '/files/*' do
+      authorize or return
+
+      path = Repos.path + "#{params[:splat].join('/')}"
+
+      unless path.exist?
+        return "file not found"
+      end
+
+      send_file path
     end
 
     put '/files/*' do
