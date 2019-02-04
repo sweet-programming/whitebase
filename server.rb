@@ -78,10 +78,9 @@ module WhiteBase
       end
     end
 
-    get '/docs/*' do
-      authorize or return
-
-      path = Repos.path + "#{params[:splat].join('/')}.md"
+    get "/share/:id" do
+      (name, id) = File.readlines(Repos.path + "share/.hash").map(&:split).find{|name, id| id == params[:id] }
+      path = Repos.path + "share/#{name}.md"
 
       unless path.exist?
         return "file not found"
@@ -89,6 +88,30 @@ module WhiteBase
 
       file_content = open(path).read()
       @content = settings.markdown.render(file_content)
+      haml :docs
+    end
+
+    get '/docs/*' do
+      authorize or return
+
+      @basename = params[:splat].join('/')
+      dir = Repos.path + @basename
+      path = Repos.path + "#{@basename}.md"
+
+      unless path.exist? || dir.directory?
+        return "file not found"
+      end
+
+      if dir.directory?
+        @filelist = Dir.glob(dir + "*.md").map{|n| File.basename(n, ".md")}
+        @dirlist = Dir.children(dir).select{|n| File.directory?(dir + n)}
+      end
+
+      if path.exist?
+        file_content = open(path).read()
+        @content = settings.markdown.render(file_content)
+      end
+
       haml :docs
     end
 
