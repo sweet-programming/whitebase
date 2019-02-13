@@ -13,14 +13,19 @@
     elements.each(function() {
       var day = new Date(setting.year, setting.month - 1, 1);
 
+      var month_str = function(offset) {
+        month = new Date(setting.year, setting.month + offset - 1, 1);
+        return month.strftime("/%Y-%m");
+      };
+
       var $table = $("<table>", { class: "wb_calendar_table" });
       var $header = $("<thead>");
       var $calendar_header = $("<th>", {class: "calendar_header", colspan: 7});
       $calendar_header
           .append($('<h3>')
-            .append($("<a>").css({ color:"#fff" }).text("<< "))
+            .append($("<a>", { href: month_str(-1) }).css({ color: "#aaa" }).text("<< "))
             .append($("<span>", { class: "header_text", text: day.strftime("%B %Y") }))
-            .append($("<a>").css("color", "#fff").text(" >>")));
+            .append($("<a>", { href: month_str(1) }).css({ color: "#aaa" }).text(" >>")));
       $header.append($("<tr>").append($calendar_header));
       $header
           .append($("<tr>")
