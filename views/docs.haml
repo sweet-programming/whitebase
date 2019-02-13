@@ -1,4 +1,7 @@
 %div{ class: "container" }
+  - if @last_access
+    %div{ class: "row" }
+      %p{ class: "last-access" }="Last access from agent: #{@last_access}"
   %div{ class: "row" }
     - if @filelist
       %h2 Files

@@ -22,6 +22,7 @@ module WhiteBase
                                              tables: true,
                                              hard_wrap: true,
                                              fenced_code_blocks: true)
+      set :last_access, {}
     end
 
     helpers do
@@ -44,11 +45,15 @@ module WhiteBase
     end
 
     get /\/(\d{4})-(\d{2})/ do
+      authorize or return
+
       (@year, @month) = params['captures']
       haml :index
     end
 
     get /\/((\d{4})-(\d{2})-(\d{2}))/ do
+      authorize or return
+
       @date = Date.parse(params['captures'][0])
       @prev = @date - 1
       @next = @date + 1
@@ -78,6 +83,10 @@ module WhiteBase
       end
     end
 
+    post "/keepalive" do
+      settings.last_access[request.ip] = Time.now
+    end
+
     get "/share/:id" do
       (name, id) = File.readlines(Repos.path + "share/.hash").map(&:split).find{|name, id| id == params[:id] }
       path = Repos.path + "share/#{name}.md"
@@ -94,6 +103,7 @@ module WhiteBase
     get '/docs/*' do
       authorize or return
 
+      @last_access = settings.last_access[request.ip]
       @basename = params[:splat].join('/')
       dir = Repos.path + @basename
       path = Repos.path + "#{@basename}.md"

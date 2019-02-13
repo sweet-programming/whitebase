@@ -108,4 +108,16 @@ class FileObserver
   end
 end
 
+Thread.new do
+  uri = URI.parse(base_url)
+  http = Net::HTTP.new(uri.host, uri.port)
+
+  loop do
+    http.post("/keepalive", "")
+  rescue Exception
+  ensure
+    sleep(60)
+  end
+end
+
 FileObserver.new(base_url, repos_dir).run

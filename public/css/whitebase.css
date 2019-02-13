@@ -95,3 +95,7 @@ img {
 h2 {
   font-size: 2rem;
 }
+
+p.last-access {
+  text-align: right;
+}
