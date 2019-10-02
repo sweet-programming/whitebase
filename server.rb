@@ -100,11 +100,16 @@ module WhiteBase
       haml :docs
     end
 
+    get "/docs" do
+      redirect "/docs/"
+    end
+
     get '/docs/*' do
       authorize or return
 
       @last_access = settings.last_access[request.ip]
       @basename = params[:splat].join('/')
+      @basepath = Pathname.new("/docs") + @basename
       dir = Repos.path + @basename
       path = Repos.path + "#{@basename}.md"
 

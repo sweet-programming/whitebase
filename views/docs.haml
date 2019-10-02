@@ -8,13 +8,13 @@
       %ul
         - @filelist.each do |filename|
           %li
-            %a{href: "./#{@basename + "/" + filename}"}=filename
+            %a{href: "#{@basepath}/#{filename}"}=filename
     - if @dirlist && @dirlist.length > 0
       %h2 Dirs
       %ul
         - @dirlist.each do |dirname|
           %li
-            %a{href: "./#{@basename + "/" + dirname}"}=dirname
+            %a{href: "#{@basepath}/#{dirname}"}=dirname
 
     - if @content
       %div{ class: 'markdown' }
