@@ -6,11 +6,19 @@ require 'fileutils'
 require 'base64'
 require_relative 'lib/whitebase/app_logger'
 
-options = ARGV.getopts('Dd:u:')
+options = ARGV.getopts('Dd:u:c')
 
 pid_file = File.expand_path('../.pid', __FILE__)
 repos_dir = options['d'] || ENV['REPOS_DIR'] || File.expand_path('../repos/', __FILE__)
 base_url = options['u'] || ENV['REMOTE_URL'] || 'http://localhost:9292'
+
+if File.exist?(pid_file)
+  if options["c"]
+    exit 0
+  end
+  $stderr.puts "#{pid_file} is existing."
+  exit 1
+end
 
 if options['D']
   Process.daemon(true)
@@ -19,6 +27,10 @@ if options['D']
   FileUtils.touch './logs/whitebase_err.log'
   $stdout = File.new('./logs/whitebase.log', 'a')
   $stderr = File.new('./logs/whitebase_err.log', 'a')
+
+  trap :TERM do
+    FileUtils.rm pid_file
+  end
 end
 
 class FileObserver
