@@ -99,6 +99,19 @@ h2 {
   font-size: 2rem;
 }
 
+p.dir-up {
+  text-align: left;
+  margin: 8px;
+  float: left;
+}
+
 p.last-access {
   text-align: right;
+  float: right;
+}
+
+p.file-download {
+  text-align: right;
+  margin: 8px;
+  float: right;
 }

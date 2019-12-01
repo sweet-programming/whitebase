@@ -109,7 +109,9 @@ module WhiteBase
 
       @last_access = settings.last_access[request.ip]
       @basename = params[:splat].join('/')
+      @dirpath = Pathname.new("/docs") + params[:splat][0...-1].join('/')
       @basepath = Pathname.new("/docs") + @basename
+      @filepath = Pathname.new("/files") + "#{@basename}.md"
       dir = Repos.path + @basename
       path = Repos.path + "#{@basename}.md"
 
