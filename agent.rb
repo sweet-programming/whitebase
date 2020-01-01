@@ -1,8 +1,9 @@
 require 'net/http'
 require 'eventmachine'
-require 'fssm'
+require 'listen'
 require 'optparse'
 require 'fileutils'
+require 'pathname'
 require 'base64'
 require_relative 'lib/whitebase/app_logger'
 
@@ -39,7 +40,7 @@ class FileObserver
   def initialize(base_url, repos_dir)
     WhiteBase::AppLogger.init
     @uri = URI.parse(base_url)
-    @repos_dir = repos_dir
+    @repos_dir = Pathname.new(repos_dir)
     @http = Net::HTTP.new(@uri.host, @uri.port)
     @updated = {}
     @mutex = Mutex.new
@@ -62,7 +63,7 @@ class FileObserver
       @updated.delete_if do |file, at|
         if at + PERIOD < Time.now
           begin
-            @http.put("/files/#{file}", Base64.encode64(File.read(@repos_dir + ?/ + file)))
+            @http.put("/files/#{file}", Base64.encode64((@repos_dir + file).read))
           rescue Exception => e
             WhiteBase::AppLogger.exception(e)
             next false
@@ -86,36 +87,27 @@ class FileObserver
         observer.tick
       end
 
-      monitor = FSSM::Monitor.new
-      monitor.path(@repos_dir) do
-        glob "**/*"
-
-        update do |base, file|
-          break if file.end_with?(?~)
-          WhiteBase::AppLogger.info "UPDATE: #{base}/#{file}"
-          observer.update(file)
+      listen = Listen.to(@repos_dir) do |modified, added, removed|
+        modified.reject{|path| path.end_with?(?~)}.each do |path|
+          relative_path = Pathname.new(path).relative_path_from(@repos_dir)
+          WhiteBase::AppLogger.info "UPDATE: #{relative_path}"
+          observer.update(relative_path)
         end
 
-        create do |base, file|
-          break if file.end_with?(?~)
-          WhiteBase::AppLogger.info "CREATE: #{base}/#{file}"
-          observer.update(file)
+       added.reject{|path| path.end_with?(?~)}.each do |path|
+          relative_path = Pathname.new(path).relative_path_from(@repos_dir)
+          WhiteBase::AppLogger.info "CREATE: #{relative_path}"
+          observer.update(relative_path)
         end
 
-        delete do |base, file|
-          break if file.end_with?(?~)
-          WhiteBase::AppLogger.info "DELETE: #{base}/#{file}"
-          observer.delete(file)
-        end
-
-        EM.defer do
-          begin
-            monitor.run
-          rescue
-            retry
-          end
+        removed.reject{|path| path.end_with?(?~)}.each do |path|
+          relative_path = Pathname.new(path).relative_path_from(@repos_dir)
+          WhiteBase::AppLogger.info "DELETE: #{relative_path}"
+          observer.delete(relative_path)
         end
       end
+
+      listen.start
     end
   end
 end

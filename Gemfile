@@ -8,7 +8,7 @@ group :development do
 end
 
 gem 'redcarpet'
-gem 'fssm'
+gem 'listen'
 #gem 'git'
 gem 'git'
 gem 'haml'
