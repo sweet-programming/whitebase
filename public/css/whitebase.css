@@ -107,6 +107,7 @@ p.dir-up {
 
 p.last-access {
   text-align: right;
+  margin: 8px;
   float: right;
 }
 

@@ -3,12 +3,12 @@
     %p{ class: "dir-up" }
       %a{ href: @dirpath }
         %span{class: "glyphicon glyphicon-arrow-up"}
-    - if @last_access
-      %p{ class: "last-access" }="Last access from agent: #{@last_access}"
     - if @filepath
       %p{ class: "file-download" }
         %a{ href: @filepath }
           %span{class: "glyphicon glyphicon-save"}
+    - if @last_access
+      %p{ class: "last-access" }="Last access from agent: #{@last_access}"
   %div{ class: "row" }
     - if @filelist
       %h2 Files
