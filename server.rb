@@ -120,8 +120,8 @@ module WhiteBase
       end
 
       if dir.directory?
-        @filelist = Dir.glob(dir + "*.md").map{|n| File.basename(n, ".md")}
-        @dirlist = Dir.children(dir).select{|n| File.directory?(dir + n)}
+        @filelist = Dir.glob(dir + "*.md").map{|n| File.basename(n, ".md")}.sort
+        @dirlist = Dir.children(dir).select{|n| File.directory?(dir + n)}.sort
       end
 
       if path.exist?
