@@ -5,6 +5,9 @@ require 'optparse'
 require 'fileutils'
 require 'pathname'
 require 'base64'
+require 'filemagic'
+require 'net/http/post/multipart'
+
 require_relative 'lib/whitebase/app_logger'
 
 options = ARGV.getopts('Dd:u:c')
@@ -58,12 +61,27 @@ class FileObserver
     @http.delete("/files/#{file}")
   end
 
+  def put_file(file)
+    path = @repos_dir + file
+    m = FileMagic.mime.file(path.to_s).match(/(?<content_type>\w+\/\w+); \w+=(?<charset>[\w-]+)/)
+    case m["charset"]
+    when "utf-8"
+      @http.put("/files/#{file}", Base64.encode64(path.read))
+    else
+      File.open(path) do |io|
+        upload_io = UploadIO.new(io, m["content_type"], file)
+        req = Net::HTTP::Put::Multipart.new("/files/#{file}", "file" => upload_io)
+        @http.request(req)
+      end
+    end
+  end
+
   def tick
     @mutex.synchronize do
       @updated.delete_if do |file, at|
         if at + PERIOD < Time.now
           begin
-            @http.put("/files/#{file}", Base64.encode64((@repos_dir + file).read))
+            put_file(file)
           rescue Exception => e
             WhiteBase::AppLogger.exception(e)
             next false
