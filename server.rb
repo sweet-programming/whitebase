@@ -14,6 +14,8 @@ end
 
 module WhiteBase
   class Server < Sinatra::Base
+    EXTENSIONS = %w(pdf png gif jpg jpeg)
+
     configure do
       enable :sessions
       set :auth, Authorization.new(File.expand_path('../.auth', __FILE__))
@@ -108,7 +110,10 @@ module WhiteBase
       authorize or return
 
       @last_access = settings.last_access[request.ip]
-      @basename = params[:splat].join('/')
+      @basename = params[:splat].first
+
+      return call env.merge("PATH_INFO" => "/files/#{@basename}") if @basename.match?(/\.#{EXTENSIONS.map{|ext| "(#{ext})"}.join("|")}$/)
+
       @dirpath = Pathname.new("/docs") + File.dirname(@basename)
       @basepath = Pathname.new("/docs") + @basename
       @filepath = Pathname.new("/files") + "#{@basename}.md"

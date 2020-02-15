@@ -1,8 +1,12 @@
 %div{ class: "container" }
   %div{ class: "row" }
     %p{ class: "dir-up" }
-      %a{ href: @dirpath }
-        %span{class: "glyphicon glyphicon-arrow-up"}
+      %span /
+      %a{ href: "/docs" } docs
+      - @basename.split("/").each_with_object("/docs") do |name, subpath|
+        - subpath += "/" + name
+        %span /
+        %a{ href: subpath }= name
     - if @filepath
       %p{ class: "file-download" }
         %a{ href: @filepath }
