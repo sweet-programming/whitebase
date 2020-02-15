@@ -39,6 +39,6 @@
                     %li.list-group-item
                       %a{href: "#{@basepath}/#{dirname}"}=dirname
 
-  - if @content
-    %div{ class: 'markdown' }
+  - if @content.length > 0
+    .markdown
       = @content

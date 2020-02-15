@@ -124,14 +124,20 @@ module WhiteBase
         return "file not found"
       end
 
+      @content = ""
+
       if dir.directory?
-        @filelist = Dir.glob(dir + "*.md").map{|n| File.basename(n, ".md")}.sort
-        @dirlist = Dir.children(dir).select{|n| File.directory?(dir + n)}.sort
+        @filelist = Dir.glob(dir + "*.md").map{|n| File.basename(n, ".md") }.reject{|n| n == "index" }.sort
+        @dirlist = Dir.children(dir).select{|n| File.directory?(dir + n) && !n.start_with?(".") }.sort
+        if (dir + "index.md").exist?
+          index_content = open(dir + "index.md").read()
+          @content = settings.markdown.render(index_content)
+          end
       end
 
       if path.exist?
         file_content = open(path).read()
-        @content = settings.markdown.render(file_content)
+        @content += settings.markdown.render(file_content)
       end
 
       haml :docs
