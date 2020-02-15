@@ -4,7 +4,7 @@
       %span /
       %a{ href: "/docs" } docs
       - @basename.split("/").each_with_object("/docs") do |name, subpath|
-        - subpath += "/" + name
+        - subpath << "/" + name
         %span /
         %a{ href: subpath }= name
     - if @filepath
@@ -13,20 +13,32 @@
           %span{class: "glyphicon glyphicon-save"}
     - if @last_access
       %p{ class: "last-access" }="Last access from agent: #{@last_access}"
-  %div{ class: "row" }
-    - if @filelist
-      %h2 Files
-      %ul
-        - @filelist.each do |filename|
-          %li
-            %a{href: "#{@basepath}/#{filename}"}=filename
-    - if @dirlist && @dirlist.length > 0
-      %h2 Dirs
-      %ul
-        - @dirlist.each do |dirname|
-          %li
-            %a{href: "#{@basepath}/#{dirname}"}=dirname
+  - if (@filelist && @filelist.length > 0) || (@dirlist && @dirlist.length)
+    .row
+      .accordion#filesAccordion
+        - if @filelist && @filelist.length > 0
+          .card
+            .card-header#headingFileList
+              %h2.mb-0
+                %button.btn.btn-link{type: "button", "data-toggle": "collapse", "data-target": "#collapseFileList", "aria-expanded": true, "aria-controls": "collapseFileList"} Files
+            .collapse.panel-collapse.in#collapseFileList{"aria-labelledby": "headingFileList", "data-parent": "#filesAccordion"}
+              .card-body
+                %ul.list-group.list-group-flush
+                  - @filelist.each do |filename|
+                    %li.list-group-item
+                      %a{href: "#{@basepath}/#{filename}"}=filename
+        - if @dirlist && @dirlist.length > 0
+          .card
+            .card-header#headingDirs
+              %h2.mb-0
+                %button.btn.btn-link{type: "button", "data-toggle": "collapse", "data-target": "#collapseDirs", "aria-expanded": true, "aria-controls": "collapseDirs"} Dirs
+            .collapse.panel-collapse.in#collapseDirs{"aria-labelledby": "headingDirs", "data-parent": "#filesAccordion"}
+              .card-body
+                %ul.list-group.list-group-flush
+                  - @dirlist.each do |dirname|
+                    %li.list-group-item
+                      %a{href: "#{@basepath}/#{dirname}"}=dirname
 
-    - if @content
-      %div{ class: 'markdown' }
-        = @content
+  - if @content
+    %div{ class: 'markdown' }
+      = @content
