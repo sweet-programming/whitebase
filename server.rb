@@ -72,7 +72,7 @@ module WhiteBase
     end
 
     get '/login' do
-      haml :login
+      haml :login, layout: false
     end
 
     post '/login' do
@@ -110,15 +110,15 @@ module WhiteBase
       authorize or return
 
       @last_access = settings.last_access[request.ip]
-      @basename = params[:splat].first
+      @pathname = params[:splat].first.sub(/\.md$/, '')
 
-      return call env.merge("PATH_INFO" => "/files/#{@basename}") if @basename.match?(/\.#{EXTENSIONS.map{|ext| "(#{ext})"}.join("|")}$/)
+      return call env.merge("PATH_INFO" => "/files/#{@pathname}") if @pathname.match?(/\.#{EXTENSIONS.map{|ext| "(#{ext})"}.join("|")}$/)
 
-      @dirpath = Pathname.new("/docs") + File.dirname(@basename)
-      @basepath = Pathname.new("/docs") + @basename
-      @filepath = Pathname.new("/files") + "#{@basename}.md"
-      dir = Repos.path + @basename
-      path = Repos.path + "#{@basename}.md"
+      @dirpath = Pathname.new("/docs") + File.dirname(@pathname)
+      @basepath = Pathname.new("/docs") + @pathname
+      @filepath = Pathname.new("/files") + "#{@pathname}.md"
+      dir = Repos.path + @pathname
+      path = Repos.path + "#{@pathname}.md"
 
       unless path.exist? || dir.directory?
         return "file not found"

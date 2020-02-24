@@ -1,43 +1,48 @@
-%div{ class: "container" }
-  %div{ class: "row" }
-    %p{ class: "dir-up" }
-      %span /
-      %a{ href: "/docs" } docs
-      - @basename.split("/").each_with_object("/docs") do |name, subpath|
-        - subpath << "/" + name
-        %span /
-        %a{ href: subpath }= name
-    - if @filepath
-      %p{ class: "file-download" }
-        %a{ href: @filepath }
-          %span{class: "glyphicon glyphicon-save"}
-    - if @last_access
-      %p{ class: "last-access" }="Last access from agent: #{@last_access}"
+.container
+  .row
+    .col
+      .d-flex.flex-row.justify-content-end
+        - if @filepath
+          .p-2.file-downloade
+            %a{ href: @filepath }
+              %i.fas.fa-download
+        - if @last_access
+          .p-2.last-access="Last access from agent: #{@last_access}"
+  .row
+    %nav{ "aria-label": "breadcrumb" }
+      %ol.breadcrumb
+        %li.breadcrumb-item
+          %a{ href: "/docs" } docs
+        - @pathname.split("/").each_with_object("/docs") do |name, subpath|
+          - subpath << "/" + name
+          %li.breadcrumb-item
+            %a{ href: subpath }= name
   - if (@filelist && @filelist.length > 0) || (@dirlist && @dirlist.length)
     .row
-      .accordion#filesAccordion
-        - if @filelist && @filelist.length > 0
-          .card
-            .card-header#headingFileList
-              %h2.mb-0
-                %button.btn.btn-link{type: "button", "data-toggle": "collapse", "data-target": "#collapseFileList", "aria-expanded": true, "aria-controls": "collapseFileList"} Files
-            .collapse.panel-collapse.in#collapseFileList{"aria-labelledby": "headingFileList", "data-parent": "#filesAccordion"}
-              .card-body
-                %ul.list-group.list-group-flush
-                  - @filelist.each do |filename|
-                    %li.list-group-item
-                      %a{href: "#{@basepath}/#{filename}"}=filename
-        - if @dirlist && @dirlist.length > 0
-          .card
-            .card-header#headingDirs
-              %h2.mb-0
-                %button.btn.btn-link{type: "button", "data-toggle": "collapse", "data-target": "#collapseDirs", "aria-expanded": true, "aria-controls": "collapseDirs"} Dirs
-            .collapse.panel-collapse.in#collapseDirs{"aria-labelledby": "headingDirs", "data-parent": "#filesAccordion"}
-              .card-body
-                %ul.list-group.list-group-flush
-                  - @dirlist.each do |dirname|
-                    %li.list-group-item
-                      %a{href: "#{@basepath}/#{dirname}"}=dirname
+      .col
+        .accordion#filesAccordion
+          - if @filelist && @filelist.length > 0
+            .card
+              .card-header#headingFileList
+                %h2.mb-0
+                  %button.btn.btn-link{type: "button", "data-toggle": "collapse", "data-target": "#collapseFileList", "aria-expanded": true, "aria-controls": "collapseFileList"} Files
+              .collapse.panel-collapse.in#collapseFileList{"aria-labelledby": "headingFileList", "data-parent": "#filesAccordion"}
+                .card-body
+                  %ul.list-group.list-group-flush
+                    - @filelist.each do |filename|
+                      %li.list-group-item
+                        %a{href: "#{@basepath}/#{filename}"}=filename
+          - if @dirlist && @dirlist.length > 0
+            .card
+              .card-header#headingDirs
+                %h2.mb-0
+                  %button.btn.btn-link{type: "button", "data-toggle": "collapse", "data-target": "#collapseDirs", "aria-expanded": true, "aria-controls": "collapseDirs"} Dirs
+              .collapse.panel-collapse.in#collapseDirs{"aria-labelledby": "headingDirs", "data-parent": "#filesAccordion"}
+                .card-body
+                  %ul.list-group.list-group-flush
+                    - @dirlist.each do |dirname|
+                      %li.list-group-item
+                        %a{href: "#{@basepath}/#{dirname}"}=dirname
 
   - if @content.length > 0
     .markdown

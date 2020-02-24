@@ -1,20 +1,24 @@
-%div{ class: "container" }
-  %div{ class: "row" }
-    %h2 Whitebase Login
+!!!
+%html
+  %head
+    %title White Base
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    %link{ href: "/css/bootstrap.min.css", rel: "stylesheet" }
 
-    %form{action: 'login', method: 'POST'}
-      %table
-        %tr
-          %td
-            %label{'form-for': 'loginname'} Login Name
-          %td
-            %input{type: 'text', name: 'loginname'}
-        %tr
-          %td
-            %label{'form-for': 'password'} Password
-          %td
-            %input{type: 'password', name: 'password'}
-        %tr
-          %td
-          %td
-            %input{type: 'submit'}
+    %script{ src: "/js/bootstrap.min.js" }
+
+  %body
+    .jumbotron
+      .container
+        .row
+          %h2 Whitebase Login
+
+        .row
+          %form{action: 'login', method: 'POST'}
+            .form-group
+              %label{for: 'loginname'} Login Name
+              %input.form-control#loginname{type: 'text', name: 'loginname'}
+            .form-group
+              %label{for: 'password'} Password
+              %input.form-control#password{type: 'password', name: 'password'}
+            %button.btn.btn-primary{type: 'submit'} ログイン

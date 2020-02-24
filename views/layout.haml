@@ -9,30 +9,23 @@
     %script{ src: "https://code.jquery.com/jquery.js" }
     %script{ src: "/js/bootstrap.min.js" }
     %script{ src: "/js/strftime.js" }
-
-    :css
-      body {
-        margin-top: 60px;
-      }
+    %script{ src: "https://kit.fontawesome.com/a506dc5b58.js", crossorigin: "anonymous" }
 
   %body
-    %header{ class: "navbar navbar-inverse navbar-fixed-top bs-docs-nav", role: "banner" }
-      %div{ class: "container" }
-        %div{ class: "navbar-header" }
-          %button{ class: "navbar-toggle", type: "button", "data-toggle": "collapse", "data-target": ".bs-navbar-collapse" }
-          %span{ class: "sr-only" } Toggle navigation
-          %span{ class: "icon-bar" }
-          %span{ class: "icon-bar" }
-          %span{ class: "icon-bar" }
-          %a{ href: "/", class: "navbar-brand" } WhiteBase
-        %nav{ class: "collapse navbar-collapse bs-navbar-collapse", role: "navigation" }
-          %ul{ class: "nav navbar-nav" }
-            %li{ class: "active" }
-              %a{ href: "/" } Home
-            %li
-              %a{ href: "/docs/today" } Today
-          %ul{ class: "nav navbar-nav navbar-right" }
-            %li
-              %a{ href: "../about" } About
+    %nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      %a.navbar-brand{href:"/"} WhiteBase
+      %button.navbar-toggler{ type: "button", "data-toggle": "collapse", "data-target": "#navbarContent", "aria-controls": "navbarContent", "aria-expanded": false, "aria-label": "Togle navigation" }
+        %san.navbar-toggler-icon
+
+      .collapse.navbar-collapse#navbarContent
+        %ul.navbar-nav.mr-auto
+          %li.nav-item.active
+            %a.nav-link{ href: "/" }
+              Home
+              %span.sr-only (current)
+          %li.nav-item
+            %a.nav-link{ href: "/docs" } Docs
+          %li.nav-item
+            %a.nav-link{ href: "/docs/today" } Today
 
     = yield
