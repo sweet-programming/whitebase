@@ -90,9 +90,10 @@ img {
   border-bottom: 1px solid #ccc;
 }
 
-.markdown code {
+.markdown pre {
   background-color: #f4f4f4;
-  padding: 4px;
+  padding: 1rem;
+  border: 1px solid #ccc;
   border-radius: 2px;
 }
 
