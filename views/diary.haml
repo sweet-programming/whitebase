@@ -1,5 +1,5 @@
-%div.container
-  %div.row
+.container
+  .row
     %div
       %span.month
         %a{href: "/#{@date.year}-#{@date.month.to_s.rjust(2, "0")}"} ^
@@ -8,6 +8,7 @@
       %span.date= @date
       %span.next
         %a{href: "/#{@next}"} >>
-  %div.row
-    %div.markdown
-      = @content
+  .row
+    .col
+      .markdown
+        = @content
