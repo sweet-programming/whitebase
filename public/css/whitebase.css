@@ -44,7 +44,7 @@ img {
   background: #fdd;
   padding: 0.5em;
   box-shadow: 10px 10px 10px rgba(0,0,0,0.4);
-  font-size: 24px;
+  font-size: 1.6rem;
   margin-top: 0;
   margin-bottom: 32px;
 }
@@ -52,6 +52,7 @@ img {
 .markdown h2 {
   background: #4ad;
   color: #ffe;
+  font-size: 1.4rem;
   padding: 0.25em;
 }
 
