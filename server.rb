@@ -36,6 +36,10 @@ module WhiteBase
         end
         true
       end
+
+      def logger
+        request.logger
+      end
     end
 
     get '/' do
@@ -157,6 +161,7 @@ module WhiteBase
 
     put '/files/*' do
       if params[:file]
+        logger.info "put file: #{params[:file]}"
         data = params[:file][:tempfile].read
       else
         data = Base64.decode64(request.body.read)
@@ -167,7 +172,11 @@ module WhiteBase
       end
 
       File.open(path, 'w') {|f| f.write(data) }
-      Repos.open.commit
+      begin
+        Repos.open.commit
+      rescue => e
+        logger.error e
+      end
       "ok"
     end
 
